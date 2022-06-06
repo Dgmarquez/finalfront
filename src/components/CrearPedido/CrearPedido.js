@@ -3,8 +3,11 @@ import React from "react";
 class CrearPedido extends React.Component {
 
     state = {
-        selected_prod_cod : null,
-        selected_prod_nombre: null,
+
+        lista_productos : [],
+        index_productos : -1,
+        selected_prod_cod : "",
+        selected_prod_nombre: "",
         cant_solicitada : 0,
         cant_manifiesto : 0,
         cant_recibida : 0,
@@ -19,15 +22,19 @@ class CrearPedido extends React.Component {
 
         let codigo_prod = this.state.selected_prod_cod;
         let nombre_prod = this.state.selected_prod_nombre;
-        let cant_solicitada = this.state.cant_solicitada;
-        let cant_manifiesto = this.state.cant_manifiesto;
-        let cant_recibida = this.state.cant_recibida;
+
+        let cant_solicitada = parseInt(this.state.cant_solicitada);
+        let cant_manifiesto = parseInt(this.state.cant_manifiesto);
+        let cant_recibida = parseInt(this.state.cant_recibida);
+
+        let proveedor = this.state.proveedorInput;
         
         if(codigo_prod != null && codigo_prod.length > 0
             && nombre_prod != null && nombre_prod.length > 0
             && !isNaN(cant_solicitada) && Number.isInteger(cant_solicitada) && cant_solicitada > 0
             && !isNaN(cant_manifiesto) && Number.isInteger(cant_manifiesto)
             && !isNaN(cant_recibida) && Number.isInteger(cant_recibida)
+            && proveedor.length > 0
             ){
                 let pedido = {
                     codigo_prod: codigo_prod,
@@ -44,7 +51,18 @@ class CrearPedido extends React.Component {
 
                 pedidos.push(pedido);
                 localStorage.setItem("pedidos", JSON.stringify(pedidos));
-                this.navegar(1);
+
+                //Despues de agregar el pedido se calcula el nuevo stock del producto
+                for (let i = 0; i < this.state.lista_productos.length; i++) {
+                    const element = this.state.lista_productos[i];
+                    if(element.codigo == pedido.codigo_prod){
+                        //Buscamos el producto con el mismo codigo y actualizamos su stock
+                        this.state.lista_productos[i].stock = this.state.lista_productos[i].stock + pedido.cant_recibida;
+                        localStorage.setItem("productos", JSON.stringify(this.state.lista_productos));
+                    }
+                }
+                
+                this.navegar(2);
         }else {
             console.log("Alguno de los campos tiene error");
         }
@@ -54,13 +72,23 @@ class CrearPedido extends React.Component {
     render() {
 
         //Obtenemos la lista de productos para el dropdown
+        //console.log("Lista string: "+ localStorage.getItem("productos"));
+        
         let lista_productos = JSON.parse(localStorage.getItem("productos"));
         if (lista_productos == null) {
             lista_productos = [];
         }
 
-        let lista_productos_render = lista_productos.map((producto) => {
-            return (<option value={producto.codigo}>{producto.nombre}</option>);
+        //console.log("Listaaa [0]: "+lista_productos[0]);
+
+        /*this.setState(
+            {lista_productos : lista_productos}
+        )*/
+        
+        this.state.lista_productos = lista_productos;
+
+        let lista_productos_render = lista_productos.map((producto, index) => {
+            return (<option value={index}>{producto.nombre}</option>);
         });
 
         return (
@@ -70,18 +98,60 @@ class CrearPedido extends React.Component {
                     <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                         <div class="flex justify-center">
                             <div class="mb-3 xl:w-96">
-                                <select class="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
-                                onChange={function (event){this.setState({value: event.target.value})}}>
-                                    <option selected>Seleccionar Producto</option>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                                Codigo Producto
+                            </label>
+                                <select defaultValue="-1" class="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
+                                onChange={(event) => {
+                                        let value = parseInt(event.target.value);
+                                        
+                                        if(value < 0 ){
+                                            this.setState({
+                                                index: value,
+                                                selected_prod_cod: "",
+                                                selected_prod_nombre : "",
+                                            });
+                                        }else{
+                                            this.setState({
+                                                index: value,
+                                                selected_prod_cod: this.state.lista_productos[value].codigo,
+                                                selected_prod_nombre : this.state.lista_productos[value].nombre,
+                                            });
+                                        }
+                                    }}>
+                                    
+                                    <option selected value="-1">Seleccionar producto</option>
                                     {lista_productos_render}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="mb-3 xl:w-96">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                                Tipo de Pedido
+                            </label>
+                                <select defaultValue="venta" class="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
+                                onChange={(event) => {
+                                    let value = event.target.value
+                                    }}>
+                                    
+                                    <option value="venta">Venta</option>
+                                    <option value="compra">Compra</option>
+                                    
                                 </select>
                             </div>
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                                Nombre Producto
+                            </label>
+                            <input disabled class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" value={this.state.selected_prod_nombre} />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
                                 Cantidad Solicitada
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" onChange={event => {
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
                                 const value = event.target.value;
                                 this.setState(
                                     { cant_solicitada: value }
@@ -92,7 +162,7 @@ class CrearPedido extends React.Component {
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Cantidad Manifiesto
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" onChange={event => {
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
                                 const value = event.target.value;
                                 this.setState(
                                     { cant_manifiesto: value }
@@ -103,7 +173,7 @@ class CrearPedido extends React.Component {
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Cantidad Recibida
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" onChange={event => {
+                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
                                 const value = event.target.value;
                                 this.setState(
                                     { cant_recibida: value }
@@ -122,10 +192,10 @@ class CrearPedido extends React.Component {
                             }} />
                         </div>
                         <div class="flex items-center justify-between">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => this.crearPedido}>
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.crearPedido}>
                                 Crear
                             </button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => this.navegar(1)}>
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => this.navegar(2)}>
                                 Cancelar
                             </button>
                         </div>

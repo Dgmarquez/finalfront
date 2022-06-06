@@ -13,11 +13,17 @@ localStorage.setItem('users', JSON.stringify(usuarios));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+let logueado = localStorage.getItem("logueado") || "false";
+let page;
+if(logueado == "true"){
+  page = 1;
+}else{
+  page = 0;
+}
+
 root.render(
-  <React.StrictMode>
-    <>
-      <App bus_mayor={funct} />
-    </>
-  </React.StrictMode>
+  <>
+    <App page={page} />
+  </>
 );
 

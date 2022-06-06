@@ -17,10 +17,12 @@ import CrearPedido from './components/CrearPedido';
 
 class App extends React.Component {
     state = {
-        page : 4
+        //page : 0
+        page: this.props.page
     }
 
     logout = () => {
+        localStorage.setItem("logueado", "false");
         this.setState(
             {page: 0}
         )
@@ -64,7 +66,7 @@ class App extends React.Component {
         }else if(this.state.page == 1){
             return <Inventario bus_logout={this.logout} bus_nav={this.navegar}/>
         }else if(this.state.page == 2){
-            return <Pedidos bus_logout={this.logout}/>
+            return <Pedidos bus_logout={this.logout} bus_nav={this.navegar}/>
         }else if(this.state.page == 3){
             return <CrearProducto bus_logout={this.logout} bus_nav={this.navegar}/>
         }else{

@@ -1,2 +1,2 @@
-import Maestro from "./Pedidos";
-export default Maestro
+import Pedidos from "./Pedidos";
+export default Pedidos

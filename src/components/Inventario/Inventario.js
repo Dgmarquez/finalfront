@@ -27,6 +27,10 @@ class Inventario extends React.Component {
         this.props.bus_nav(3);
     }
 
+    ir_Pedidos = () => {
+        this.props.bus_nav(2);
+    }
+
     cargarLista = () => {
         let productos = JSON.parse(localStorage.getItem("productos"));
         if (productos == null) {
@@ -115,6 +119,9 @@ class Inventario extends React.Component {
             <>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.ir_crearProducto}>
                     Crear Producto
+                </button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.ir_Pedidos}>
+                    Pedidos
                 </button>
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.logout}>
                     Cerrar Sesión

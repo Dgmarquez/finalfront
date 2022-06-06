@@ -3,24 +3,11 @@ import React from "react";
 class Pedidos extends React.Component {
 
     state = {
-        lista_pedidos: [{
-            cant_solicitada: 10,
-            cant_manifiesto: 14,
-            cant_recibida: 8,
-            codigo_prod: "arroz_diana",
-            nombre_prod: "Arroz Diana"
-        },
-        {
-            cant_solicitada: 10,
-            cant_manifiesto: 14,
-            cant_recibida: 8,
-            codigo_prod: "pastas_doria",
-            nombre_prod: "Pastas Doria"
-        }]
+        lista_pedidos: []
     }
 
     llenarPedidos = () => {
-        let new_listas_pedidos = [
+        /*let new_listas_pedidos = [
             {
                 cant_solicitada: 10,
                 cant_manifiesto: 14,
@@ -38,7 +25,24 @@ class Pedidos extends React.Component {
         ];
         this.setState(
             { lista_pedidos: new_listas_pedidos }
-        );
+        );*/
+
+        let new_listas_pedidos = JSON.parse(localStorage.getItem("pedidos"));
+        console.log("New lista: "+ new_listas_pedidos);
+        if(new_listas_pedidos == null){
+            new_listas_pedidos = [];
+        }
+        //this.state.lista_pedidos = new_listas_pedidos;
+        this.state.lista_pedidos = new_listas_pedidos;
+
+    }
+
+    ir_crearPedido = () => {
+        this.props.bus_nav(4);
+    }
+
+    ir_Inventario = () => {
+        this.props.bus_nav(1);
     }
 
     logout = () => {
@@ -46,6 +50,9 @@ class Pedidos extends React.Component {
     }
 
     render() {
+
+        this.llenarPedidos();
+
         let pageBody = null;
 
         let render_listaPedidos = this.state.lista_pedidos.map((pedido) => {
@@ -119,6 +126,12 @@ class Pedidos extends React.Component {
 
         return (
             <>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.ir_crearPedido}>
+                        Crear Pedido
+                </button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.ir_Inventario}>
+                        Inventario
+                </button>
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.logout}>
                     Cerrar Sesión
                 </button>
