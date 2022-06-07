@@ -24,20 +24,20 @@ const Inventario = (props) => {
 					className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
 					// type='button'
 					href={"/edit/" + index}
-					// onClick={(_) => edit(_, product)}
+				// onClick={(_) => edit(_, product)}
 				>
 					Editar
 				</a>
 			</td>
 		</tr>
 	)) ?? (
-		<div className='p-6 text-xl text-center'>
-			<h1>Actualmente no hay productos creados</h1>
-			<p>
-				Pero puedes crear uno <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" href='/new_product'>aquí</a>
-			</p>
-		</div>
-	);
+			<div className='p-6 text-xl text-center'>
+				<h1>Actualmente no hay productos creados</h1>
+				<p>
+					Pero puedes crear uno <a className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" href='/new_product'>aquí</a>
+				</p>
+			</div>
+		);
 
 	return (
 		<div>

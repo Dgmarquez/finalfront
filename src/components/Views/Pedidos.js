@@ -37,7 +37,7 @@ class Pedidos extends React.Component {
 
     }
 
-    ir_crearPedido = () => {
+    /*ir_crearPedido = () => {
         this.props.bus_nav(4);
     }
 
@@ -47,7 +47,7 @@ class Pedidos extends React.Component {
 
     logout = () => {
         this.props.bus_logout();
-    }
+    }*/
 
     render() {
 
@@ -126,15 +126,6 @@ class Pedidos extends React.Component {
 
         return (
             <div>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.ir_crearPedido}>
-                        Crear Pedido
-                </button>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.ir_Inventario}>
-                        Inventario
-                </button>
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.logout}>
-                    Cerrar Sesión
-                </button>
                 {pageBody}
             </ div>
         );
