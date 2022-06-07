@@ -11,11 +11,8 @@ class CrearPedido extends React.Component {
         cant_solicitada : 0,
         cant_manifiesto : 0,
         cant_recibida : 0,
-        proveedorInput : ""
-    }
-
-    navegar = (nav_to) => {
-        this.props.bus_nav(nav_to);
+        proveedorInput : "",
+        select_tipo_pedido : "venta"
     }
 
     crearPedido = () => {
@@ -41,28 +38,43 @@ class CrearPedido extends React.Component {
                     nombre_prod : nombre_prod,
                     cant_solicitada : cant_solicitada,
                     cant_manifiesto : cant_manifiesto,
-                    cant_recibida : cant_recibida
+                    cant_recibida : cant_recibida,
+                    tipo_pedido : this.state.select_tipo_pedido
                 }
 
                 let pedidos = JSON.parse(localStorage.getItem("pedidos"));
                 if (pedidos == null) {
                     pedidos = [];
                 }
-
-                pedidos.push(pedido);
-                localStorage.setItem("pedidos", JSON.stringify(pedidos));
-
+                
                 //Despues de agregar el pedido se calcula el nuevo stock del producto
                 for (let i = 0; i < this.state.lista_productos.length; i++) {
                     const element = this.state.lista_productos[i];
-                    if(element.codigo == pedido.codigo_prod){
-                        //Buscamos el producto con el mismo codigo y actualizamos su stock
-                        this.state.lista_productos[i].stock = this.state.lista_productos[i].stock + pedido.cant_recibida;
-                        localStorage.setItem("productos", JSON.stringify(this.state.lista_productos));
+                    if(element.code == pedido.codigo_prod){
+                        
+                        let lista_productos = this.state.lista_productos;
+
+                        let nueva_cantidad;
+                        if(pedido.tipo_pedido == "venta"){
+                            nueva_cantidad = lista_productos[i].stock - pedido.cant_recibida;   
+                        }else{
+                            nueva_cantidad = lista_productos[i].stock + pedido.cant_recibida;
+                        }
+
+                        if(nueva_cantidad >= 0){
+                            let state = JSON.parse(localStorage.getItem("state"));
+
+                            state.pedidos.push(pedido);
+
+                            lista_productos[i].stock = nueva_cantidad;
+                            state.products = lista_productos ;
+                            localStorage.setItem("state", JSON.stringify(state));
+                            window.location.href = "/";
+                        }else{
+                            console.log("La cantida es menor a 0");
+                        }
                     }
                 }
-                
-                this.navegar(2);
         }else {
             console.log("Alguno de los campos tiene error");
         }
@@ -74,7 +86,7 @@ class CrearPedido extends React.Component {
         //Obtenemos la lista de productos para el dropdown
         //console.log("Lista string: "+ localStorage.getItem("productos"));
         
-        let lista_productos = JSON.parse(localStorage.getItem("productos"));
+        let lista_productos = this.props.products;
         if (lista_productos == null) {
             lista_productos = [];
         }
@@ -88,7 +100,7 @@ class CrearPedido extends React.Component {
         this.state.lista_productos = lista_productos;
 
         let lista_productos_render = lista_productos.map((producto, index) => {
-            return (<option value={index}>{producto.nombre}</option>);
+            return (<option value={index}>{producto.name}</option>);
         });
 
         return (
@@ -114,8 +126,8 @@ class CrearPedido extends React.Component {
                                         }else{
                                             this.setState({
                                                 index: value,
-                                                selected_prod_cod: this.state.lista_productos[value].codigo,
-                                                selected_prod_nombre : this.state.lista_productos[value].nombre,
+                                                selected_prod_cod: this.state.lista_productos[value].code,
+                                                selected_prod_nombre : this.state.lista_productos[value].name,
                                             });
                                         }
                                     }}>
@@ -132,7 +144,9 @@ class CrearPedido extends React.Component {
                             </label>
                                 <select defaultValue="venta" className="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
                                 onChange={(event) => {
-                                    let value = event.target.value
+                                    this.setState(
+                                        {select_tipo_pedido : event.target.value}
+                                        );
                                     }}>
                                     
                                     <option value="venta">Venta</option>
@@ -195,7 +209,7 @@ class CrearPedido extends React.Component {
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.crearPedido}>
                                 Crear
                             </button>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => this.navegar(2)}>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => window.location.href = "/orders"}>
                                 Cancelar
                             </button>
                         </div>

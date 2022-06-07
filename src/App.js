@@ -18,6 +18,7 @@ const App = () => {
 	};
 	const [user, setUser] = useState();
 	const [products, setProducts] = useState();
+	const [pedidos, setPedidos] = useState();
 	const set_user = (_user) => {
 		setUser(_user);
 		set_browser_state("user", _user);
@@ -25,6 +26,10 @@ const App = () => {
 	const set_products = (_products) => {
 		setProducts(_products);
 		set_browser_state("products", _products);
+	};
+	const set_pedidos = (_pedidos) => {
+		setPedidos(_pedidos);
+		set_browser_state("pedidos", _pedidos);
 	};
 	const logout = () => {
 		setUser();
@@ -34,6 +39,7 @@ const App = () => {
 		const loaded = JSON.parse(localStorage.getItem("state")) ?? {};
 		set_user(loaded.user);
 		set_products(loaded.products??[]);
+		set_pedidos(loaded.pedidos??[]);
 	}, []);
 	return (
 		<>
@@ -46,7 +52,7 @@ const App = () => {
 								<Route path='/' element={<Inventario products={products} />} />
 								<Route path='/orders' element={<Pedidos />} />
 								<Route path='/new_product' element={<CrearProducto />} />
-								<Route path='/new_order' element={<CrearPedido />} />
+								<Route path='/new_order' element={<CrearPedido products={products}/>} />
 								<Route path='/edit/*' element={<EditarProducto products={products} />} />
 							</Routes>
 						</div>
