@@ -1,78 +1,62 @@
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./index.css";
 
-import React, { useState } from 'react';
-import Inventario from './components/Inventario'
-import './index.css';
+import SideBar from "./components/Base/SideBar";
+import CrearPedido from "./components/Views/CrearPedido";
+import CrearProducto from "./components/Views/FormularioProducto";
+import Inventario from "./components/Views/Inventario";
+import Login from "./components/Views/Login";
+import Pedidos from "./components/Views/Pedidos";
+import EditarProducto from "./components/Views/EditarProducto";
 
-/*import {
-    BrowserRouter,
-    Routes,
-    Route,
-    Link,
-    useNavigate
-} from "react-router-dom";*/
-import Login from './components/Login/Login';
-import Pedidos from './components/Pedidos/Pedidos';
-import CrearProducto from './components/CrearProducto/CrearProducto';
-import CrearPedido from './components/CrearPedido';
+const App = () => {
+	const set_browser_state = (key, value) => {
+		let state = JSON.parse(localStorage.getItem("state")) ?? {};
+		state[key] = value;
+		localStorage.setItem("state", JSON.stringify(state));
+	};
+	const [user, setUser] = useState();
+	const [products, setProducts] = useState();
+	const set_user = (_user) => {
+		setUser(_user);
+		set_browser_state("user", _user);
+	};
+	const set_products = (_products) => {
+		setProducts(_products);
+		set_browser_state("products", _products);
+	};
+	const logout = () => {
+		setUser();
+		set_browser_state("user");
+	};
+	useEffect(() => {
+		const loaded = JSON.parse(localStorage.getItem("state")) ?? {};
+		set_user(loaded.user);
+		set_products(loaded.products??[]);
+	}, []);
+	return (
+		<>
+			{user ? (
+				<BrowserRouter>
+					<div className='flex'>
+						<SideBar logout={logout} user={user.username} />
+						<div className="grid h-screen w-screen place-items-center">
+							<Routes>
+								<Route path='/' element={<Inventario products={products} />} />
+								<Route path='/orders' element={<Pedidos />} />
+								<Route path='/new_product' element={<CrearProducto />} />
+								<Route path='/new_order' element={<CrearPedido />} />
+								<Route path='/edit/*' element={<EditarProducto products={products} />} />
+							</Routes>
+						</div>
+					</div>
+				</BrowserRouter>
+			) : (
+				<Login set_user={set_user}/>
+			)}
+		</>
+	);
+};
 
-class App extends React.Component {
-    state = {
-        //page : 0
-        page: this.props.page
-    }
-
-    logout = () => {
-        localStorage.setItem("logueado", "false");
-        this.setState(
-            {page: 0}
-        )
-    }
-
-    goToInventory = () => {
-        this.setState(
-            {page: 1}
-        )
-    }
-
-    navegar = (nav_to) => {
-        this.setState(
-            {page: nav_to}
-        )
-    }
-
-    agregarFruta = (nombre, precio) => {
-        let newFruta = { nombre: nombre, precio: precio, cantidad: 0 };
-        this.state.frutas.push(newFruta);
-        this.setState(
-            { frutas: this.state.frutas }
-        );
-        console.log("Lista Despues: " + this.state.frutas);
-    }
-
-    actualizarCantidad = (nombre, cantidad) => {
-        let list = this.state.frutas;
-        for (let i = 0; i < list.length; i++) {
-            const element = list[i];
-            if (element.nombre == nombre) {
-                list[i].cantidad = cantidad;
-            }
-        }
-        this.forceUpdate()
-    }
-
-    render() {
-        if(this.state.page == 0){
-            return <Login bus_goToInventory={this.goToInventory}/>
-        }else if(this.state.page == 1){
-            return <Inventario bus_logout={this.logout} bus_nav={this.navegar}/>
-        }else if(this.state.page == 2){
-            return <Pedidos bus_logout={this.logout} bus_nav={this.navegar}/>
-        }else if(this.state.page == 3){
-            return <CrearProducto bus_logout={this.logout} bus_nav={this.navegar}/>
-        }else{
-            return <CrearPedido bus_logout={this.logout} bus_nav={this.navegar}/>
-        }
-    }
-}
-
-export default App
+export default App;

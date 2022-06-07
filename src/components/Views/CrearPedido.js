@@ -92,16 +92,16 @@ class CrearPedido extends React.Component {
         });
 
         return (
-            <>
-                <p class="text-blue-600/75">Crear Pedido</p>
-                <div class="w-full max-w-xs">
-                    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                        <div class="flex justify-center">
-                            <div class="mb-3 xl:w-96">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+            <div>
+                <p className="text-blue-600/75">Crear Pedido</p>
+                <div className="w-full max-w-xs">
+                    <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                        <div className="flex justify-center">
+                            <div className="mb-3 xl:w-96">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Codigo Producto
                             </label>
-                                <select defaultValue="-1" class="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
+                                <select defaultValue="-1" className="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
                                 onChange={(event) => {
                                         let value = parseInt(event.target.value);
                                         
@@ -125,12 +125,12 @@ class CrearPedido extends React.Component {
                                 </select>
                             </div>
                         </div>
-                        <div class="flex justify-center">
-                            <div class="mb-3 xl:w-96">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                        <div className="flex justify-center">
+                            <div className="mb-3 xl:w-96">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Tipo de Pedido
                             </label>
-                                <select defaultValue="venta" class="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
+                                <select defaultValue="venta" className="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example"  
                                 onChange={(event) => {
                                     let value = event.target.value
                                     }}>
@@ -141,67 +141,67 @@ class CrearPedido extends React.Component {
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Nombre Producto
                             </label>
-                            <input disabled class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" value={this.state.selected_prod_nombre} />
+                            <input disabled className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" value={this.state.selected_prod_nombre} />
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2">
                                 Cantidad Solicitada
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
                                 const value = event.target.value;
                                 this.setState(
                                     { cant_solicitada: value }
                                 )
                             }} />
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Cantidad Manifiesto
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
                                 const value = event.target.value;
                                 this.setState(
                                     { cant_manifiesto: value }
                                 )
                             }} />
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Cantidad Recibida
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="number" onChange={event => {
                                 const value = event.target.value;
                                 this.setState(
                                     { cant_recibida: value }
                                 )
                             }} />
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" for="username">
                                 Proveedor
                             </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" onChange={event => {
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" onChange={event => {
                                 const value = event.target.value;
                                 this.setState(
                                     { proveedorInput: value }
                                 )
                             }} />
                         </div>
-                        <div class="flex items-center justify-between">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.crearPedido}>
+                        <div className="flex items-center justify-between">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.crearPedido}>
                                 Crear
                             </button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => this.navegar(2)}>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={() => this.navegar(2)}>
                                 Cancelar
                             </button>
                         </div>
                     </form>
                 </div>
-            </>
+            </ div>
         )
     }
 }
