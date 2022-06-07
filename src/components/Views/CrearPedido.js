@@ -12,7 +12,8 @@ class CrearPedido extends React.Component {
         cant_manifiesto : 0,
         cant_recibida : 0,
         proveedorInput : "",
-        select_tipo_pedido : "venta"
+        select_tipo_pedido : "venta",
+        error: ""
     }
 
     crearPedido = () => {
@@ -72,11 +73,13 @@ class CrearPedido extends React.Component {
                             window.location.href = "/";
                         }else{
                             console.log("La cantida es menor a 0");
+                            this.setState({ error: "No hay suficiente stock" });
                         }
                     }
                 }
         }else {
             console.log("Alguno de los campos tiene error");
+            this.setState({ error: "Alguno de los campos tiene error" });
         }
 
     }
@@ -205,6 +208,7 @@ class CrearPedido extends React.Component {
                                 )
                             }} />
                         </div>
+                        <p className='text-red-700'>{this.state.error}</p>
                         <div className="flex items-center justify-between">
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.crearPedido}>
                                 Crear
