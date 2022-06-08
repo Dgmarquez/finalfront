@@ -27,7 +27,7 @@ class Pedidos extends React.Component {
             { lista_pedidos: new_listas_pedidos }
         );*/
 
-        let new_listas_pedidos = JSON.parse(localStorage.getItem("pedidos"));
+        let new_listas_pedidos = JSON.parse(localStorage.getItem("state")).pedidos;
         console.log("New lista: "+ new_listas_pedidos);
         if(new_listas_pedidos == null){
             new_listas_pedidos = [];
