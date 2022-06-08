@@ -73,9 +73,7 @@ class Pedidos extends React.Component {
                 <td className="px-6 py-4">
                     {pedido.cant_recibida}
                 </td>
-                <td className="px-6 py-4 text-right">
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={this.login}>Eliminar</button>
-                </td>
+                
             </tr>
             );
         });
