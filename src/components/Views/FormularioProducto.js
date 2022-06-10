@@ -39,15 +39,19 @@ class FormularioProducto extends React.Component {
 			let state = JSON.parse(localStorage.getItem("state"));
 			const products = state.products;
 			const productWithSameCode = products.find(
-				prod => String(prod.code) === String(producto.code)
-			);
+				prod => String(prod.code) === String(producto.code));
+
+			const productWithSameName = products.find(
+				prod => String(prod.name) === String(producto.name));
       if (productWithSameCode) {
-        this.setState({ error: 'Ya existe un producto con este codigo' });
-      } else {
+        this.setState({ error: 'Ya existe un producto con este Codigo' });
+      } else if (productWithSameName) {
+        this.setState({ error: 'Ya existe un producto con este Nombre' });
+      }else{
         state.products.push(producto);
         localStorage.setItem("state", JSON.stringify(state));
         window.location.href = "/";
-      }
+	  }
 		}
 	};
 	editarProducto = () => {
