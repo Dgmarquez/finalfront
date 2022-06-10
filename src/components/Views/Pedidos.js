@@ -112,11 +112,11 @@ class Pedidos extends React.Component {
         } else {
             pageBody = (
                 <>
-                    <p>
+                    <p className="font-medium leading-tight text-5xl mt-0 mb-2 text-blue-600">
                         Lista Vacia
                     </p>
 
-                    <button>Pagar</button>
+                    <button className="hover:text-green-700 font-medium leading-tight text-5xl mt-0 mb-2 text-blue-600 mx-10">Pagar</button>
                 </>
             )
         }
@@ -125,7 +125,7 @@ class Pedidos extends React.Component {
         return (
             <div>
                 {pageBody}
-            </ div>
+            </div>
         );
 
     }

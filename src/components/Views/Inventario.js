@@ -28,6 +28,21 @@ const Inventario = (props) => {
 				>
 					Editar
 				</a>
+				<a
+					className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+					style={{marginLeft: '5px', cursor: 'pointer'}}
+					onClick={ () => {
+						let state = JSON.parse(localStorage.getItem("state"));
+						const products = state.products;
+						state.products = products.filter(
+							prod => String(prod.code) !== String(product.code)
+						);
+						localStorage.setItem("state", JSON.stringify(state));
+						window.location.href = "/";
+					}}
+				>
+					Borrar
+				</a>
 			</td>
 		</tr>
 	)) ?? (

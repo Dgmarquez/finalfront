@@ -37,9 +37,17 @@ class FormularioProducto extends React.Component {
 				stock: this.state.stockInput,
 			};
 			let state = JSON.parse(localStorage.getItem("state"));
-			state.products.push(producto);
-			localStorage.setItem("state", JSON.stringify(state));
-			window.location.href = "/";
+			const products = state.products;
+			const productWithSameCode = products.find(
+				prod => String(prod.code) === String(producto.code)
+			);
+      if (productWithSameCode) {
+        this.setState({ error: 'Ya existe un producto con este codigo' });
+      } else {
+        state.products.push(producto);
+        localStorage.setItem("state", JSON.stringify(state));
+        window.location.href = "/";
+      }
 		}
 	};
 	editarProducto = () => {
@@ -69,7 +77,7 @@ class FormularioProducto extends React.Component {
 	render() {
 		return (
 			<div>
-				<p className='text-blue-600/75'>
+				<p className='text-blue-600/75 text-xl font-bold mx-20'>
 					{this.props.product ? "Editar" : "Crear"} Producto
 				</p>
 				<div className='w-full max-w-xs'>
@@ -169,6 +177,7 @@ class FormularioProducto extends React.Component {
 						<div className='flex items-center justify-between'>
 							<button
 								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+								href='/'
 								type='button'
 								onClick={() =>
 									this.props.product
@@ -178,10 +187,7 @@ class FormularioProducto extends React.Component {
 							>
 								{this.props.product ? "Editar" : "Crear"}
 							</button>
-							<a
-								className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-								href='/'
-							>
+							<a	className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' href='/'>
 								Cancelar
 							</a>
 						</div>
